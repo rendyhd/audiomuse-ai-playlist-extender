@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    {
+      "id": "playlist_curator",
+      "name": "Playlist Curator",
+      "author": "rendyhd",
+      "description": "Build, extend, preview, deduplicate, and save playlists with metadata filters and weighted embedding similarity.",
+      "pluginUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/plugins/PlaylistCurator/plugin.json"
+    }
+  ]
+}

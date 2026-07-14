@@ -1,0 +1,46 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile Python
+        run: python -m compileall -q plugins/PlaylistCurator scripts
+
+      - name: Check JavaScript syntax
+        run: |
+          for file in plugins/PlaylistCurator/static/playlist_curator/*.js; do
+            node --check "$file"
+          done
+
+      - name: Build and inspect archive
+        run: |
+          python scripts/build_playlist_curator_plugin.py
+          python - <<'PY'
+          import json
+          import zipfile
+          from pathlib import Path
+
+          metadata = json.loads(
+              Path("plugins/PlaylistCurator/plugin.json").read_text(encoding="utf-8")
+          )
+          version = metadata["versions"][0]["version"]
+          archive = Path(f"dist/playlist_curator/playlist_curator_{version}.zip")
+          with zipfile.ZipFile(archive) as package:
+              names = package.namelist()
+          assert "plugin.json" not in names
+          assert "__init__.py" in names
+          assert all(".." not in Path(name).parts for name in names)
+          PY

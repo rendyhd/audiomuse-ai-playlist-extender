@@ -1,0 +1,13 @@
+<script>
+window.CURATOR_URLS = Object.freeze({
+    filterOptions: {{ url_for('playlist_curator.get_filter_options') | tojson }},
+    search: {{ url_for('playlist_curator.search_api') | tojson }},
+    savePlaylist: {{ url_for('playlist_curator.save_playlist_api') | tojson }},
+    serverPlaylists: {{ url_for('playlist_curator.server_playlists_api') | tojson }},
+    serverPlaylistTracks: {{ url_for('playlist_curator.server_playlist_tracks_api') | tojson }},
+    findDuplicates: {{ url_for('playlist_curator.find_duplicates_api') | tojson }},
+    streamTemplate: {{ url_for('playlist_curator.stream_track', item_id='__ITEM_ID__') | tojson }},
+    extenderPage: {{ url_for('playlist_curator.playlist_extender_page') | tojson }},
+    corePlaylists: {{ url_for('get_playlists_endpoint') | tojson }}
+});
+</script>

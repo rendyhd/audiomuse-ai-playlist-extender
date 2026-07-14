@@ -1,0 +1,19 @@
+{
+  "id": "playlist_curator",
+  "name": "Playlist Curator",
+  "author": "rendyhd",
+  "description": "Build, extend, preview, deduplicate, and save playlists with metadata filters and weighted embedding similarity.",
+  "targets": [
+    "flask"
+  ],
+  "versions": [
+    {
+      "version": "0.1.0",
+      "min_core_version": "2.6.2",
+      "changelog": "Initial plugin release of Smart Search, Playlist Extender, weighted influence, duplicate review, audio preview, and media-server playlist saving.",
+      "imageUrl": "",
+      "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.0.zip",
+      "checksum": "5146d60a7aa26bc926b3c625def66338"
+    }
+  ]
+}
