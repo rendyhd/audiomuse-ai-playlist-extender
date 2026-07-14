@@ -33,7 +33,7 @@ class ReleaseMetadataTests(unittest.TestCase):
             self.assertIn("Smart Search", entry["description"])
             self.assertIn("Playlist Expander", entry["description"])
 
-        self.assertEqual(metadata["versions"][0]["version"], "0.1.2")
+        self.assertEqual(metadata["versions"][0]["version"], "0.1.3")
 
     def test_header_uses_lumae_branding(self):
         topbar = (
@@ -62,6 +62,37 @@ class ReleaseMetadataTests(unittest.TestCase):
             self.assertIn(button_id, shared_js)
 
         self.assertIn("Clear the entire Workbench?", shared_js)
+
+    def test_long_track_text_is_contained_within_its_column(self):
+        css = (
+            PLUGIN / "static" / "playlist_curator" / "curator.css"
+        ).read_text(encoding="utf-8")
+        search_js = (
+            PLUGIN / "static" / "playlist_curator" / "curator-search.js"
+        ).read_text(encoding="utf-8")
+        extender_js = (
+            PLUGIN / "static" / "playlist_curator" / "curator-extender.js"
+        ).read_text(encoding="utf-8")
+
+        track_column_rule = re.search(
+            r"\.curator-table \.col-track\s*\{([^}]*)\}", css, re.DOTALL
+        )
+        track_text_rule = re.search(
+            r"\.curator-track-cell-title,\s*"
+            r"\.curator-track-cell-sub\s*\{([^}]*)\}",
+            css,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(track_column_rule)
+        self.assertIn("overflow: hidden", track_column_rule.group(1))
+        self.assertIsNotNone(track_text_rule)
+        self.assertIn("text-overflow: ellipsis", track_text_rule.group(1))
+        self.assertIn("white-space: nowrap", track_text_rule.group(1))
+
+        for script in (search_js, extender_js):
+            self.assertIn('<td class="col-track">', script)
+            self.assertIn('class="curator-track-cell-title" title=', script)
+            self.assertIn('class="curator-track-cell-sub" title=', script)
 
 
 if __name__ == "__main__":

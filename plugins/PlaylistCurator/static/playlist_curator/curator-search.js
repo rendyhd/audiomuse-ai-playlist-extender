@@ -476,7 +476,7 @@
             <table class="curator-table">
                 <thead><tr>
                     <th class="col-play"></th>
-                    <th>Title / Artist</th>
+                    <th class="col-track">Title / Artist</th>
                     <th>Album</th>
                     <th class="col-year">Year</th>
                     <th class="col-bpm">BPM</th>
@@ -511,9 +511,9 @@
             <td class="col-play">
                 <button type="button" class="curator-icon-btn" data-stream="${escHtml(stream)}" data-item-id="${id}" data-title="${title}" data-artist="${artist}">${ICONS.play}</button>
             </td>
-            <td>
-                <div class="curator-track-cell-title">${title}</div>
-                <div class="curator-track-cell-sub">${artist}</div>
+            <td class="col-track">
+                <div class="curator-track-cell-title" title="${title}">${title}</div>
+                <div class="curator-track-cell-sub" title="${artist}">${artist}</div>
             </td>
             <td class="col-album">${album}</td>
             <td class="col-year">${year}</td>

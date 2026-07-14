@@ -482,7 +482,7 @@
             <table class="curator-table">
                 <thead><tr>
                     <th class="col-play"></th>
-                    <th>Title / Artist</th>
+                    <th class="col-track">Title / Artist</th>
                     <th>Album</th>
                     <th class="col-distance">Distance</th>
                     <th class="col-influence">Influence</th>
@@ -544,9 +544,9 @@
             <td class="col-play">
                 <button type="button" class="curator-icon-btn" data-stream="${escHtml(m.stream)}" data-item-id="${m.id}" data-title="${m.title}" data-artist="${m.artist}">${ICONS.play}</button>
             </td>
-            <td>
-                <div class="curator-track-cell-title">${m.title}</div>
-                <div class="curator-track-cell-sub">${m.artist}</div>
+            <td class="col-track">
+                <div class="curator-track-cell-title" title="${m.title}">${m.title}</div>
+                <div class="curator-track-cell-sub" title="${m.artist}">${m.artist}</div>
                 ${dupBadge}
             </td>
             <td class="col-album">${m.album}</td>

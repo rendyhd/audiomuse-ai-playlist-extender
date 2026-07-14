@@ -531,6 +531,18 @@ html.dark-mode .curator-select {
 body.dark-mode .curator-table tr.dup-warn,
 html.dark-mode .curator-table tr.dup-warn { background: #422006; }
 
+.curator-table .col-track {
+    min-width: 0;
+    overflow: hidden;
+}
+.curator-track-cell-title,
+.curator-track-cell-sub {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .curator-track-cell-title { font-weight: 600; color: var(--text-main); }
 .curator-track-cell-sub { font-size: 11px; color: var(--text-muted); }
 
