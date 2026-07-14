@@ -17,7 +17,10 @@ jobs:
           python-version: "3.12"
 
       - name: Compile Python
-        run: python -m compileall -q plugins/PlaylistCurator scripts
+        run: python -m compileall -q plugins/PlaylistCurator scripts tests
+
+      - name: Run focused tests
+        run: python -m unittest discover -s tests -v
 
       - name: Check JavaScript syntax
         run: |
