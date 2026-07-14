@@ -1,6 +1,6 @@
 # AudioMuse-AI Playlist Extender
 
-An installable AudioMuse-AI plugin for searching, extending, previewing, deduplicating, and saving playlists from an analyzed music library.
+An installable AudioMuse-AI plugin by Lumae with Smart Search and Playlist Expander for discovering, extending, previewing, deduplicating, and saving playlists.
 
 ## Install
 
@@ -15,7 +15,7 @@ Refresh the catalog, install **Playlist Curator**, and select **Apply now (resta
 ## Features
 
 - Smart Search across artist, album, genre, mood, BPM, energy, key, scale, year, and rating metadata.
-- Playlist Extender based on a weighted centroid of AudioMuse analysis embeddings.
+- Playlist Expander based on a weighted centroid of AudioMuse analysis embeddings.
 - Normal, Boost, Strong, and Focus influence levels for seed tracks.
 - Duplicate review for search results, extender results, and the shared Workbench.
 - Credential-safe audio previews proxied through AudioMuse.

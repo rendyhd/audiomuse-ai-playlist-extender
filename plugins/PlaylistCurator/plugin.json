@@ -1,12 +1,20 @@
 {
   "id": "playlist_curator",
   "name": "Playlist Curator",
-  "author": "rendyhd",
-  "description": "Build, extend, preview, deduplicate, and save playlists with metadata filters and weighted embedding similarity.",
+  "author": "Lumae",
+  "description": "Includes Smart Search and Playlist Expander for discovering, extending, previewing, deduplicating, and saving playlists.",
   "targets": [
     "flask"
   ],
   "versions": [
+    {
+      "version": "0.1.2",
+      "min_core_version": "2.6.0",
+      "changelog": "Add visible Clear Workbench actions, apply Lumae branding and authorship, and clarify Smart Search and Playlist Expander in catalog metadata.",
+      "imageUrl": "",
+      "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.2.zip",
+      "checksum": "110f53d61e66d1982d71f920ca22f793"
+    },
     {
       "version": "0.1.1",
       "min_core_version": "2.6.0",

@@ -1,11 +1,11 @@
 # Playlist Curator
 
-Playlist Curator is an AudioMuse-AI plugin for building and extending playlists from the analyzed music library.
+Playlist Curator is a Lumae plugin for AudioMuse-AI with Smart Search and Playlist Expander for building playlists from the analyzed music library.
 
 ## Features
 
 - Smart Search across artist, album, genre, mood, BPM, energy, key, scale, year, and rating metadata.
-- Playlist Extender using a weighted centroid of analysis embeddings.
+- Playlist Expander using a weighted centroid of analysis embeddings.
 - Per-track Normal, Boost, Strong, and Focus influence levels.
 - Duplicate discovery in search results, extender results, and the shared Workbench.
 - Audio preview proxied through AudioMuse so media-server credentials stay server-side.
