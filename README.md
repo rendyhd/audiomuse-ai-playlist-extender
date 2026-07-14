@@ -25,7 +25,7 @@ MPD playlist loading and audio previews are intentionally unsupported.
 
 ## Compatibility
 
-The plugin requires AudioMuse-AI 2.6.2 or newer and runs in the Flask/web process. It has no additional Python dependencies.
+The plugin requires AudioMuse-AI 2.6.0 or newer and runs in the Flask/web process. It has no additional Python dependencies.
 
 The extender intentionally imports `find_nearest_neighbors_by_vector` and `get_vector_by_id` directly from `tasks.ivf_manager`. Those are internal AudioMuse interfaces, so a future core refactor may require a matching plugin update.
 

@@ -10,7 +10,8 @@
 
 Main Features:
 * Excludes plugin.json and Python cache files from the install package.
-* Produces reproducible archives and reports their MD5 checksum.
+* Normalizes text line endings for reproducible cross-platform archives.
+* Reports the archive's MD5 checksum for publication metadata.
 """
 
 import argparse
@@ -23,6 +24,22 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_ROOT = REPO_ROOT / "plugins" / "PlaylistCurator"
+TEXT_SUFFIXES = {
+    ".cfg",
+    ".css",
+    ".html",
+    ".ini",
+    ".js",
+    ".json",
+    ".md",
+    ".py",
+    ".svg",
+    ".toml",
+    ".txt",
+    ".xml",
+    ".yaml",
+    ".yml",
+}
 
 
 def _manifest():
@@ -41,6 +58,13 @@ def _members():
         yield path, relative.as_posix()
 
 
+def _member_bytes(path):
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_SUFFIXES or path.name in {"COPYING", "LICENSE"}:
+        return data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return data
+
+
 def build(output_dir):
     manifest = _manifest()
     version = str(manifest["versions"][0]["version"])
@@ -53,7 +77,7 @@ def build(output_dir):
             info = zipfile.ZipInfo(archive_name, date_time=(1980, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
-            archive.writestr(info, source.read_bytes())
+            archive.writestr(info, _member_bytes(source))
 
     checksum = hashlib.md5(output.read_bytes(), usedforsecurity=False).hexdigest()
     return output, checksum
