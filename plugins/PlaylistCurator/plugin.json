@@ -13,7 +13,7 @@
       "changelog": "Save new playlists with exactly the entered name instead of appending the AudioMuse _instant suffix.",
       "imageUrl": "",
       "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.4.zip",
-      "checksum": "3f6ef4881c7255efad1e07c43754f6db"
+      "checksum": "a572f8c53a33779d05ebed15ded2d313"
     },
     {
       "version": "0.1.3",
