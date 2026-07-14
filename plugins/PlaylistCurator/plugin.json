@@ -8,6 +8,14 @@
   ],
   "versions": [
     {
+      "version": "0.1.1",
+      "min_core_version": "2.6.0",
+      "changelog": "Correct the minimum AudioMuse version after verifying compatibility with 2.6.0 and 2.6.1; runtime behavior is unchanged.",
+      "imageUrl": "",
+      "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.1.zip",
+      "checksum": "d7a4fd475bf29bfbfddbb777f03c25f8"
+    },
+    {
       "version": "0.1.0",
       "min_core_version": "2.6.2",
       "changelog": "Initial plugin release of Smart Search, Playlist Extender, weighted influence, duplicate review, audio preview, and media-server playlist saving.",
