@@ -13,6 +13,7 @@ Main Features:
 * Keeps the Lumae header and visible Clear Workbench actions regression-tested.
 """
 
+import ast
 import json
 from pathlib import Path
 import re
@@ -33,7 +34,7 @@ class ReleaseMetadataTests(unittest.TestCase):
             self.assertIn("Smart Search", entry["description"])
             self.assertIn("Playlist Expander", entry["description"])
 
-        self.assertEqual(metadata["versions"][0]["version"], "0.1.3")
+        self.assertEqual(metadata["versions"][0]["version"], "0.1.4")
 
     def test_header_uses_lumae_branding(self):
         topbar = (
@@ -93,6 +94,76 @@ class ReleaseMetadataTests(unittest.TestCase):
             self.assertIn('<td class="col-track">', script)
             self.assertIn('class="curator-track-cell-title" title=', script)
             self.assertIn('class="curator-track-cell-sub" title=', script)
+
+    def test_new_playlist_keeps_the_exact_submitted_name(self):
+        source_path = PLUGIN / "__init__.py"
+        source = source_path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=str(source_path))
+        helper_names = {
+            "_server_playlist_names",
+            "_create_saved_playlist",
+            "_replace_saved_playlist",
+            "_execute_playlist_save",
+        }
+        helpers = [
+            node
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef) and node.name in helper_names
+        ]
+        namespace = {"_fetch_server_playlists": lambda: []}
+        exec(compile(ast.Module(body=helpers, type_ignores=[]), str(source_path), "exec"), namespace)
+
+        calls = []
+
+        def write_playlist(name, track_ids):
+            calls.append((name, track_ids))
+            return {"Id": "playlist-123", "Name": name}
+
+        result = namespace["_execute_playlist_save"](
+            {
+                "action": "created",
+                "playlist_name": "Evening Mix",
+                "track_ids": ["track-1", "track-2"],
+            },
+            write_playlist,
+        )
+
+        self.assertEqual(calls, [("Evening Mix", ["track-1", "track-2"])])
+        self.assertEqual(
+            result,
+            (
+                "playlist-123",
+                "Playlist 'Evening Mix' created with 2 songs!",
+                201,
+                None,
+            ),
+        )
+        self.assertNotIn("create_playlist_from_ids", source)
+
+    def test_new_playlist_does_not_replace_an_existing_exact_name(self):
+        source_path = PLUGIN / "__init__.py"
+        tree = ast.parse(source_path.read_text(encoding="utf-8"), filename=str(source_path))
+        helper_names = {"_server_playlist_names", "_create_saved_playlist"}
+        helpers = [
+            node
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef) and node.name in helper_names
+        ]
+        namespace = {
+            "_fetch_server_playlists": lambda: [{"Name": "Evening Mix"}],
+        }
+        exec(compile(ast.Module(body=helpers, type_ignores=[]), str(source_path), "exec"), namespace)
+
+        def unexpected_write(_name, _track_ids):
+            self.fail("existing playlist must not be overwritten by create-new")
+
+        result = namespace["_create_saved_playlist"](
+            "Evening Mix", ["track-1"], unexpected_write
+        )
+        self.assertEqual(
+            result,
+            (None, None, ("Playlist 'Evening Mix' already exists", 409)),
+        )
 
 
 if __name__ == "__main__":

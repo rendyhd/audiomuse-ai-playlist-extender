@@ -8,6 +8,14 @@
   ],
   "versions": [
     {
+      "version": "0.1.4",
+      "min_core_version": "2.6.0",
+      "changelog": "Save new playlists with exactly the entered name instead of appending the AudioMuse _instant suffix.",
+      "imageUrl": "",
+      "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.4.zip",
+      "checksum": "3f6ef4881c7255efad1e07c43754f6db"
+    },
+    {
       "version": "0.1.3",
       "min_core_version": "2.6.0",
       "changelog": "Keep long track titles and artist names inside their table column so they no longer overlap album information.",

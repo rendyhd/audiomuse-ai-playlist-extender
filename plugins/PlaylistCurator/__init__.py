@@ -866,16 +866,41 @@ def _parse_save_playlist_request(payload):
     }, None
 
 
-def _replace_saved_playlist(playlist_name, track_ids, replace_playlist):
-    """Replace an exact-name server playlist and validate the provider response."""
-    existing_names = {
+def _server_playlist_names():
+    """Return the normalized exact names currently exposed by the media server."""
+    return {
         str(playlist.get('Name') or playlist.get('name') or '').strip()
         for playlist in (_fetch_server_playlists() or [])
     }
+
+
+def _create_saved_playlist(playlist_name, track_ids, write_playlist):
+    """Create an exact-name playlist without the core instant-playlist suffix."""
+    if playlist_name in _server_playlist_names():
+        return None, None, (f"Playlist '{playlist_name}' already exists", 409)
+    try:
+        created = write_playlist(playlist_name, track_ids)
+    except NotImplementedError:
+        return None, None, (
+            "Creating playlists is not supported by this media server",
+            501,
+        )
+    if not created:
+        return None, None, ("Media server failed to create playlist", 502)
+    playlist_id = created.get('Id') or created.get('id')
+    if not playlist_id:
+        return None, None, ("Media server creation returned no playlist ID", 502)
+    message = f"Playlist '{playlist_name}' created with {len(track_ids)} songs!"
+    return playlist_id, message, None
+
+
+def _replace_saved_playlist(playlist_name, track_ids, write_playlist):
+    """Replace an exact-name server playlist and validate the provider response."""
+    existing_names = _server_playlist_names()
     if playlist_name not in existing_names:
         return None, None, (f"Playlist '{playlist_name}' no longer exists", 404)
     try:
-        replaced = replace_playlist(playlist_name, track_ids)
+        replaced = write_playlist(playlist_name, track_ids)
     except NotImplementedError:
         return None, None, (
             "Replacing playlists is not supported by this media server",
@@ -890,24 +915,26 @@ def _replace_saved_playlist(playlist_name, track_ids, replace_playlist):
     return playlist_id, message, None
 
 
-def _execute_playlist_save(save_request, create_playlist, replace_playlist):
+def _execute_playlist_save(save_request, write_playlist):
     """Execute one normalized playlist save request."""
     playlist_name = save_request['playlist_name']
     track_ids = save_request['track_ids']
     if save_request['action'] == 'replaced':
         playlist_id, message, error = _replace_saved_playlist(
-            playlist_name, track_ids, replace_playlist
+            playlist_name, track_ids, write_playlist
         )
-        return playlist_id, message, 200, error
-    playlist_id = create_playlist(playlist_name, track_ids)
-    message = f"Playlist '{playlist_name}' created with {len(track_ids)} songs!"
-    return playlist_id, message, 201, None
+        status = 200
+    else:
+        playlist_id, message, error = _create_saved_playlist(
+            playlist_name, track_ids, write_playlist
+        )
+        status = 201
+    return playlist_id, message, status, error
 
 
 @bp.route('/api/save-playlist', methods=['POST'])
 def save_playlist_api():
     """Create a new curator playlist or replace the named server-playlist seed."""
-    from tasks.ivf_manager import create_playlist_from_ids
     from tasks.mediaserver import create_or_replace_playlist
 
     save_request, validation_error = _parse_save_playlist_request(
@@ -918,7 +945,7 @@ def save_playlist_api():
         return jsonify({"error": message}), status
     try:
         playlist_id, message, status, save_error = _execute_playlist_save(
-            save_request, create_playlist_from_ids, create_or_replace_playlist
+            save_request, create_or_replace_playlist
         )
         if save_error:
             error_message, error_status = save_error
