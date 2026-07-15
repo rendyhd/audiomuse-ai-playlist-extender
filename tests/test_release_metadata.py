@@ -34,7 +34,7 @@ class ReleaseMetadataTests(unittest.TestCase):
             self.assertIn("Smart Search", entry["description"])
             self.assertIn("Playlist Expander", entry["description"])
 
-        self.assertEqual(metadata["versions"][0]["version"], "0.1.4")
+        self.assertEqual(metadata["versions"][0]["version"], "0.1.5")
 
     def test_header_uses_lumae_branding(self):
         topbar = (
@@ -164,6 +164,26 @@ class ReleaseMetadataTests(unittest.TestCase):
             result,
             (None, None, ("Playlist 'Evening Mix' already exists", 409)),
         )
+
+    def test_both_pages_link_to_repository_issues(self):
+        templates = PLUGIN / "templates" / "playlist_curator"
+        feedback = (templates / "_curator_feedback.html").read_text(encoding="utf-8")
+        css = (
+            PLUGIN / "static" / "playlist_curator" / "curator.css"
+        ).read_text(encoding="utf-8")
+
+        for page_name in ("search.html", "extender.html"):
+            page = (templates / page_name).read_text(encoding="utf-8")
+            self.assertIn("playlist_curator/_curator_feedback.html", page)
+
+        self.assertIn(
+            "https://github.com/rendyhd/audiomuse-ai-playlist-extender/issues",
+            feedback,
+        )
+        self.assertIn("Feedback &amp; issues", feedback)
+        self.assertIn('target="_blank"', feedback)
+        self.assertIn('rel="noopener noreferrer"', feedback)
+        self.assertIn(".curator-feedback", css)
 
 
 if __name__ == "__main__":

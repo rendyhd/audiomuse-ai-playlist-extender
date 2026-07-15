@@ -8,6 +8,14 @@
   ],
   "versions": [
     {
+      "version": "0.1.5",
+      "min_core_version": "2.6.0",
+      "changelog": "Add a Feedback & issues footer link to the GitHub repository on both plugin pages.",
+      "imageUrl": "",
+      "sourceUrl": "https://raw.githubusercontent.com/rendyhd/audiomuse-ai-playlist-extender/main/dist/playlist_curator/playlist_curator_0.1.5.zip",
+      "checksum": "5b7b99f82889d401436e1cb41c23c36f"
+    },
+    {
       "version": "0.1.4",
       "min_core_version": "2.6.0",
       "changelog": "Save new playlists with exactly the entered name instead of appending the AudioMuse _instant suffix.",
