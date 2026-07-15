@@ -182,6 +182,32 @@ html.dark-mode {
 
 .curator-page-header em { font-style: italic; color: var(--text-sub); }
 
+.curator-feedback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.curator-feedback a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.curator-feedback a:hover {
+    text-decoration: underline;
+}
+
 /* ---------------- Card ---------------- */
 .curator-card {
     background: var(--bg-card);
